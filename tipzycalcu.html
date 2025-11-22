@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipzy Calculator</title>
+<link rel="icon" type="image/x-icon" href="tipzy logo.jfif">
+
+
+<style>
+    body {
+        background-image: url(https://media.gettyimages.com/id/1400867925/video/defocused-of-nightclub-or-restaurant-at-night.jpg?s=640x640&k=20&c=UlfP_p6Mlnn_rljK48OQhLggkkbzrXoYqrL7CvuKTUE=);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+
+        font-family: "verdana";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .main {
+        background: white;
+        padding: 30px;
+        width: 340px;
+        border-radius: 20px;
+        box-shadow: 0px 10px 5px black;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 1.4rem;
+        color: #333;
+    }
+    input {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 16px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #0f52ba;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    .clear {
+        background: #e0e0e0;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    .result {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        color: #480001;
+    }
+
+    table {
+        border-collapse: collapse;
+        font-family: ;
+    }
+
+    td, th {
+        border: 1px ;
+        padding: 10px;
+    }
+
+    th {
+        text-align: center;
+    }
+    tr {
+      border-bottom: 1px solid #ddd;
+    }
+    .logo {
+        border-radius: 50%;
+        align-self: center;
+
+    }
+
+</style>
+
+
+<body>
+   
+    <div class="main">
+        <img class= "logo" src="tipzy logo.jfif" width = "70" height = "70">
+
+        <h2>Price Calculator</h2>
+
+        <table>
+            <tr>
+                <th>Style</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td>Basic</td>
+                <td>&#8369;20</td>
+                <td>
+                    <input id="sim" type="number" placeholder="Enter quantity">
+                </td>
+            </tr>
+            <tr>
+                <td>Designed</td>
+                <td>&#8369;35</td>
+                <td>
+                    <input id="des" type="number" placeholder="Enter quantity">
+                </td>
+            </tr>
+            <tr>
+                <td>Complex</td>
+                <td>&#8369;50</td>
+                <td>
+                    <input id="com" type="number" placeholder="Enter quantity">
+                </td>
+            </tr>
+        </table>
+
+        <button onclick="tot()">Calculate</button>
+        <button class="clear" onclick="Clear()">New</button>
+        <div class="result" id="result">TOTAL:</div>
+    </div>
+
+</body>
+
+<script>
+    function tot() {
+        const sim = document.getElementById('sim').value;
+        const des = document.getElementById('des').value;
+        const com = document.getElementById('com').value;
+
+        const total = sim*20 + des*35 + com*50;
+
+        document.getElementById("result").textContent = "TOTAL: "+ total;
+    }
+
+    function Clear() {
+        document.getElementById("sim").value = "";
+        document.getElementById("des").value = "";
+        document.getElementById("com").value = "";
+        document.getElementById("result").textContent = "TOTAL: ";
+    }
+</script>
