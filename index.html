@@ -115,7 +115,7 @@
             </tr>
             <tr>
                 <td>Basic</td>
-                <td>&#8369;20</td>
+                <td>&#8369;25</td>
                 <td>
                     <input id="sim" type="number" placeholder="Enter quantity">
                 </td>
@@ -149,9 +149,11 @@
         const des = document.getElementById('des').value;
         const com = document.getElementById('com').value;
 
-        const total = sim*20 + des*35 + com*50;
+        const total = sim*25 + des*35 + com*50;
 
         document.getElementById("result").textContent = "TOTAL: "+ total;
+
+        sendtoGS(sim, des, com, total);
     }
 
     function Clear() {
@@ -160,5 +162,26 @@
         document.getElementById("com").value = "";
         document.getElementById("result").textContent = "TOTAL: ";
     }
+
+    function sendtoGS(sim, des, com, total) {
+        const url = "https://script.google.com/macros/s/AKfycbzsEUSDStac6fPN1DjDemDOsKBf1RiC_HusCqntZalk0hBlmp-NTZCBqe9BF7K0isGbKw/exec";
+
+        const SECRET_KEY = "TIPZY_SECRET_2987";
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                key: SECRET_KEY,
+                simple: sim,
+                designed: des,
+                complex: com,
+                revenue: total,
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log("Saved:", data))
+        .catch(err => console.error(err));
+    }
 </script>
+
 
