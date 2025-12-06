@@ -17,7 +17,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        height: 120vh;
     }
 
     .main {
@@ -97,6 +97,62 @@
 
     }
 
+    /*  -----PAYMENT METHOD---------  */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 200px;
+      height: 36px;
+    }
+
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #06400c;
+      -webkit-transition: .4s;
+      transition: .4s;
+      font-family: "arial";
+      font-weight: bold;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "CASH";
+      align-content: center;
+      height: 26px;
+      width: 60px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(130px);
+      -ms-transform: translateX(130px);
+      transform: translateX(130px);
+      content: "GCASH";
+    }
+
 </style>
 
 
@@ -135,10 +191,18 @@
                 </td>
             </tr>
         </table>
-
+        
+        <h4>Payment Method</h4>
+        <label class="switch">
+            <input type="checkbox" id="payment">
+            <span class="slider"></span>
+        </label>
+        
+        <div class="result" id="result">TOTAL:</div>
+        <br>
         <button onclick="tot()">Calculate</button>
         <button class="clear" onclick="Clear()">New</button>
-        <div class="result" id="result">TOTAL:</div>
+        
     </div>
 
 </body>
@@ -153,7 +217,11 @@
 
         document.getElementById("result").textContent = "TOTAL: "+ total;
 
-        sendtoGS(sim, des, com, total);
+        /*GCASH OR CASH*/
+        const bayad = document.getElementById('payment');
+        const way = bayad.checked ? "GCASH" : "CASH";
+        
+        sendtoGS(sim, des, com, total, way);
     }
 
     function Clear() {
@@ -163,7 +231,7 @@
         document.getElementById("result").textContent = "TOTAL: ";
     }
 
-    function sendtoGS(sim, des, com, total) {
+    function sendtoGS(sim, des, com, total, way) {
         const url = "https://script.google.com/macros/s/AKfycbzsEUSDStac6fPN1DjDemDOsKBf1RiC_HusCqntZalk0hBlmp-NTZCBqe9BF7K0isGbKw/exec";
 
         const SECRET_KEY = "TIPZY_SECRET_2987";
@@ -176,6 +244,7 @@
                 designed: des,
                 complex: com,
                 revenue: total,
+                MOP: way,
             })
         })
         .then(response => response.json())
@@ -183,5 +252,6 @@
         .catch(err => console.error(err));
     }
 </script>
+
 
 
