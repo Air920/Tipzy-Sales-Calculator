@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tipzy Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="tipzy logo.jfif">
+
+  <style>
+    body {
+      font-family: verdana;
+      background: #710014;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px 20px 0px;
+      width: 200px;  /* Set the desired width of the cropped area */
+      height: 150px; /* Set the desired height of the cropped area */
+      /* Optional: Add a border to see the container boundaries */
+      margin: 0 auto;
+    }
+
+
+    header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* This scales and crops the image to fill the container */
+    }
+      
+    p {
+      color: #666;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fffcf5;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: black;
+      font-size: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+   <img class= "logo" src="tipzy logo.jfif">
+</header>
+
+<div class="container">
+  <a class="card" href="tipzycalcu.html">
+    <h3>Price Calculator</h3>
+  </a>
+
+  <a class="card" href="tipzyresibo.html">
+    <h3>Receipt Generator</h3>
+  </a>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tipzy Receipt Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="tipzylogo.jfif">
+
+<style>
+body {
+  background: url("https://media.gettyimages.com/id/1400867925/video/defocused-of-nightclub-or-restaurant-at-night.jpg?s=640x640&k=20&c=UlfP_p6Mlnn_rljK48OQhLggkkbzrXoYqrL7CvuKTUE=")
+    no-repeat center / cover;
+  font-family: Verdana, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  background: white;
+  padding: 25px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+h2 { margin-top: 0; }
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+textarea { resize: vertical; min-height: 80px; }
+
+label { display: block; margin-bottom: 6px; }
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover { opacity: 0.9; }
+
+.back {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<a href="tipzyhome.html" class="back">← Back</a>
+
+<div class="main">
+<h2>Receipt Info</h2>
+
+<input id="name" placeholder="Client Name">
+<input id="email" placeholder="Client Email">
+
+<label><input type="radio" name="design" value="Solid"> Solid (₱250)</label>
+<label><input type="radio" name="design" value="Basic"> Basic (₱350)</label>
+<label><input type="radio" name="design" value="Medium"> Medium (₱450)</label>
+<label><input type="radio" name="design" value="Complex"> Complex (₱550)</label>
+<label><input type="radio" name="design" value="Custom"> Custom</label>
+
+<input id="customPrice" placeholder="Custom Price (if applicable)">
+
+<label>
+  <input type="checkbox" id="rush">
+  Rush Order (+₱75)
+</label>
+
+<textarea id="notes" placeholder="Extra notes"></textarea>
+
+<button id="sendBtn">Send Receipt</button>
+
+<p id="status"></p>
+</div>
+
+<script>
+document.getElementById("sendBtn").addEventListener("click", function() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const customPrice = document.getElementById("customPrice").value;
+  const notes = document.getElementById("notes").value;
+  const selected = document.querySelector('input[name="design"]:checked');
+  const rush = document.getElementById("rush").checked;
+
+  if (!name || !email) {
+    alert("Please fill in name and email.");
+    return;
+  }
+
+  if (!selected) {
+    alert("Please select a design.");
+    return;
+  }
+
+  const payload = {
+    secret: "TIPZY-RECEIPT-2025",
+    name: name,
+    email: email,
+    design: selected.value,
+    customPrice: customPrice,
+    rush: rush,
+    notes: notes
+  };
+
+  status.innerText = "Sending...";
+
+  fetch("https://script.google.com/macros/s/AKfycbyF0Med7PRM80X-sF75Lr9VqckPPU_zRRCxx0EukPVz6iKd5Fx58Cejllwz25-fbKCC/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.text())
+  .then(msg => status.innerText = msg)
+  .catch(err => {
+    console.error(err);
+    status.innerText = "Network error: " + err.message;
+  });
+});
+</script>
+
+
+</body>
+</html>
