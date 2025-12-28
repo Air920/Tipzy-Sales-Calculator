@@ -97,11 +97,13 @@ button:hover { opacity: 0.9; }
 <p id="status"></p>
 </div>
 
+
 <script>
-document.getElementById("sendBtn").addEventListener("click", function() {
+const SECRET_KEY = "TIPZY-RECEIPT-2025";
+
+document.getElementById("sendBtn").addEventListener("click", function () {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
-  const customPrice = document.getElementById("customPrice").value;
   const notes = document.getElementById("notes").value;
   const selected = document.querySelector('input[name="design"]:checked');
   const rush = document.getElementById("rush").checked;
@@ -117,32 +119,33 @@ document.getElementById("sendBtn").addEventListener("click", function() {
   }
 
   const payload = {
-  secret: SECRET_KEY,
-  name,
-  email,
-  design,
-  rush,
-  notes
-};
+    secret: SECRET_KEY,
+    name: name,
+    email: email,
+    design: selected.value,
+    rush: rush,
+    notes: notes
+  };
 
-const formData = new URLSearchParams(payload);
+  const formData = new URLSearchParams(payload);
 
-fetch(https://script.google.com/macros/s/AKfycbyF0Med7PRM80X-sF75Lr9VqckPPU_zRRCxx0EukPVz6iKd5Fx58Cejllwz25-fbKCC/exec, {
-  method: "POST",
-  body: formData
-})
-.then(res => res.text())
-.then(msg => {
-  alert(msg);
-})
-.catch(err => {
-  alert("Failed to send receipt");
-  console.error(err);
-});
+  fetch("https://script.google.com/macros/s/AKfycbyF0Med7PRM80X-sF75Lr9VqckPPU_zRRCxx0EukPVz6iKd5Fx58Cejllwz25-fbKCC/exec", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.text())
+    .then(msg => alert(msg))
+    .catch(err => {
+      console.error(err);
+      alert("Failed to send receipt");
+    });
 });
 </script>
 
 
+
+
 </body>
 </html>
+
 
