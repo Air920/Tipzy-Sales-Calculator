@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Tipzy Receipt Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="tipzylogo.jfif">
+<link rel="icon" href="https://air920.github.io/Tipzy-Sales-Calculator/tipzylogo.png">
 
 <style>
 body {
@@ -117,31 +117,32 @@ document.getElementById("sendBtn").addEventListener("click", function() {
   }
 
   const payload = {
-    secret: "TIPZY-RECEIPT-2025",
-    name: name,
-    email: email,
-    design: selected.value,
-    customPrice: customPrice,
-    rush: rush,
-    notes: notes
-  };
+  secret: SECRET_KEY,
+  name,
+  email,
+  design,
+  rush,
+  notes
+};
 
-  status.innerText = "Sending...";
+const formData = new URLSearchParams(payload);
 
-  fetch("https://script.google.com/macros/s/AKfycbyF0Med7PRM80X-sF75Lr9VqckPPU_zRRCxx0EukPVz6iKd5Fx58Cejllwz25-fbKCC/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(r => r.text())
-  .then(msg => status.innerText = msg)
-  .catch(err => {
-    console.error(err);
-    status.innerText = "Network error: " + err.message;
-  });
+fetch(https://script.google.com/macros/s/AKfycbyF0Med7PRM80X-sF75Lr9VqckPPU_zRRCxx0EukPVz6iKd5Fx58Cejllwz25-fbKCC/exec, {
+  method: "POST",
+  body: formData
+})
+.then(res => res.text())
+.then(msg => {
+  alert(msg);
+})
+.catch(err => {
+  alert("Failed to send receipt");
+  console.error(err);
+});
 });
 </script>
 
 
 </body>
 </html>
+
