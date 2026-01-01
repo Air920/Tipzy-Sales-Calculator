@@ -22,7 +22,7 @@ body {
   background: white;
   padding: 25px;
   width: 100%;
-  max-width: 420px;
+  max-width: 700px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,.25);
 }
@@ -30,7 +30,7 @@ body {
 h2 { margin-top: 0; }
 
 input, textarea {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   margin-top: 8px;
   margin-bottom: 12px;
@@ -64,6 +64,31 @@ button:hover { opacity: 0.9; }
   text-decoration: none;
   font-weight: bold;
 }
+
+.opt {
+  display: block;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  }
+
+  .opt input {
+    width: auto;
+    margin: 0;
+  }
+
+  .rush {
+    
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .rush input {
+    width: auto;
+    margin: 0;
+  }
+  
 </style>
 </head>
 
@@ -77,18 +102,19 @@ button:hover { opacity: 0.9; }
 <input id="name" placeholder="Client Name">
 <input id="email" placeholder="Client Email">
 
-<label><input type="radio" name="design" value="Solid"> Solid (₱250)</label>
-<label><input type="radio" name="design" value="Basic"> Basic (₱350)</label>
-<label><input type="radio" name="design" value="Medium"> Medium (₱450)</label>
-<label><input type="radio" name="design" value="Complex"> Complex (₱550)</label>
-<label><input type="radio" name="design" value="Custom"> Custom</label>
-
+<div class="opt">
+  <label><input type="radio" name="design" value="Solid"> Solid (₱250)</label>
+  <label><input type="radio" name="design" value="Basic"> Basic (₱350)</label>
+  <label><input type="radio" name="design" value="Deluxe"> Deluxe (₱450)</label>
+  <label><input type="radio" name="design" value="Premium"> Premium (₱550)</label>
+  <label><input type="radio" name="design" value="Custom"> Custom</label>
+</div>
+  
 <input id="customPrice" placeholder="Custom Price (if applicable)">
 
-<label>
-  <input type="checkbox" id="rush">
-  Rush Order (+₱75)
-</label>
+<div class="rush">
+  <label><input type="checkbox" id="rush"> Rush Order (+₱75) </label>
+</div>
 
 <textarea id="notes" placeholder="Extra notes"></textarea>
 
@@ -147,5 +173,6 @@ document.getElementById("sendBtn").addEventListener("click", function () {
 
 </body>
 </html>
+
 
 
