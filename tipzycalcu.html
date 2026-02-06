@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tipzy Calculator</title>
-<link rel="icon" type="image/x-icon" href="Tipzy-Sales-Calculator/tipzy logo.jfif">
+<link rel="icon" type="image/x-icon" href="Tipzy-Sales-Calculator/tipzylogo.png">
 
 
 <style>
@@ -20,14 +20,53 @@
         height: 120vh;
     }
 
-    .main {
+    .logo {
+        display: block;
+        margin: 0 auto 10px auto;
+        border-radius: 50%;
+    }
+
+    /* ----- TABS --------*/
+    .ulo {
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+    }
+
+    .tab {
         background: white;
         padding: 30px;
         width: 340px;
         border-radius: 20px;
         box-shadow: 0px 10px 5px black;
+        margin-bottom: -10PX;
         display: flex;
         flex-direction: column;
+        display: none;
+    }
+
+    .tab.active {
+        display: block;
+        background: white;
+        padding: 20px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        background: #710014;
+        color: whitesmoke;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .tab-btn.active {
+        background: white;
+        color: #710014;
+        border-bottom: 2px solid white;
     }
 
     h2 {
@@ -157,10 +196,15 @@
 
 
 <body>
-   
+    <a href="index.html" class="back">← Back</a>
+    
     <div class="main">
-        <img class= "logo" src="Tipzy-Sales-Calculator/tipzy logo.jfif" width = "70" height = "70">
-
+        <div class="ulo">
+          <button class="tab-btn active" data-tab="calc" onclick="showTab('calc')">Mix & Match</button>
+          <button class="tab-btn" data-tab="sets" onclick="showTab('sets')">Sets</button>
+        </div>
+      <div class="tab active" id="calc">
+            <img class= "logo" src="Tipzy-Sales-Calculator/tipzylogo.png" width = "70" height = "70">
         <h2>Price Calculator</h2>
 
         <table>
@@ -204,23 +248,82 @@
         <button class="clear" onclick="Clear()">New</button>
         
     </div>
+    <div class="tab" id="sets">
+        <img class= "logo" src="tipzylogo.png" width = "70" height = "70">
+
+        <h2>Set Price</h2>
+        <input id="manual" type="number" placeholder="Enter price">
+
+        <h4>Payment Method</h4>
+        <label class="switch">
+            <input type="checkbox" id="paymentSET">
+            <span class="slider"></span>
+        </label>
+        <br><br>
+        <div id="istatus" style="display: none; font-weight: bolder; color: #710014;"> SENT!
+        </div>
+
+        <br>
+
+        <button onclick="sendSet()">Paldo</button>
+        <button class="clear" onclick="bagoset()">New</button>
+    </div>
+    </div>
 
 </body>
 
 <script>
+  window.onload = () => showTab('calc');
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => {
+          tab.classList.remove('active');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+      });
+
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+     }
+
+     /* SENDS THE SET */
+
+    function sendSet() {
+        const el = document.getElementById("istatus");
+        el.style.display = "block"
+
+        const price = Number(document.getElementById("manual").value);
+        if (!price || price <= 0) return alert("Enter a valid price");
+
+        const pay = document.getElementById("paymentSET").checked ? "GCASH" : "CASH";
+
+        sendtoGS(0, 0, 0, price, pay, "SET");
+    }
+
+    /* ICLEAR ANG SET */
+
+    function bagoset() {
+        document.getElementById("manual").value = "";
+        document.getElementById("paymentSET").checked = false;
+    }
+
     function tot() {
         const sim = document.getElementById('sim').value;
         const des = document.getElementById('des').value;
         const com = document.getElementById('com').value;
-
-        const total = sim*25 + des*35 + com*50;
+        
+        const total = sim*20 + des*35 + com*50;
 
         document.getElementById("result").textContent = "TOTAL: "+ total;
 
         /*GCASH OR CASH*/
         const bayad = document.getElementById('payment');
         const way = bayad.checked ? "GCASH" : "CASH";
-        
+
+
         sendtoGS(sim, des, com, total, way);
     }
 
@@ -231,7 +334,8 @@
         document.getElementById("result").textContent = "TOTAL: ";
     }
 
-    function sendtoGS(sim, des, com, total, way) {
+ 
+    function sendtoGS(sim, des, com, total, way, entryType) {
         const url = "https://script.google.com/macros/s/AKfycbzsEUSDStac6fPN1DjDemDOsKBf1RiC_HusCqntZalk0hBlmp-NTZCBqe9BF7K0isGbKw/exec";
 
         const SECRET_KEY = "TIPZY_SECRET_2987";
@@ -245,13 +349,16 @@
                 complex: com,
                 revenue: total,
                 MOP: way,
+                entryType: entryType
             })
         })
         .then(response => response.json())
         .then(data => console.log("Saved:", data))
         .catch(err => console.error(err));
     }
+
 </script>
+
 
 
 
