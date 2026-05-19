@@ -103,14 +103,16 @@ button:hover { opacity: 0.9; }
 <input id="email" placeholder="Client Email">
 
 <div class="opt">
-  <label><input type="radio" name="design" value="Solid"> Solid (₱250)</label>
-  <label><input type="radio" name="design" value="Basic"> Basic (₱350)</label>
-  <label><input type="radio" name="design" value="Deluxe"> Deluxe (₱450)</label>
-  <label><input type="radio" name="design" value="Premium"> Premium (₱550)</label>
-  <label><input type="radio" name="design" value="Custom"> Custom</label>
+  <label><input type="radio" name="design" value="Solid"> Solid (₱300)</label>
+  <label><input type="radio" name="design" value="Frenchplain"> French tip/Plain glaze (₱350)</label>
+  <label><input type="radio" name="design" value="Frenchacc"> French tip w/ accents (₱380)</label>
+  <label><input type="radio" name="design" value="DS1"> Deluxe Set 1 (₱430)</label>
+  <label><input type="radio" name="design" value="DS2"> Deluxe Set 2 (₱480)</label>
+  <label><input type="radio" name="design" value="Premium"> Premium </label>
+
 </div>
   
-<input id="customPrice" placeholder="Custom Price (if applicable)">
+<input id="customPrice" placeholder="Price">
 
 <div class="rush">
   <label><input type="checkbox" id="rush"> Rush Order (+₱75) </label>
@@ -127,12 +129,25 @@ button:hover { opacity: 0.9; }
 <script>
 const SECRET_KEY = "TIPZY-RECEIPT-2025";
 
+const prices = {
+  Solid: 300,
+  Frenchplain: 350,
+  Frenchacc: 380,
+  DS1: 430,
+  DS2: 480
+};
+
 document.getElementById("sendBtn").addEventListener("click", function () {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const notes = document.getElementById("notes").value;
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const notes = document.getElementById("notes").value.trim();
+
   const selected = document.querySelector('input[name="design"]:checked');
+
   const rush = document.getElementById("rush").checked;
+
+  const customPriceInput = document.getElementById("customPrice").value.trim();
 
   if (!name || !email) {
     alert("Please fill in name and email.");
@@ -144,12 +159,36 @@ document.getElementById("sendBtn").addEventListener("click", function () {
     return;
   }
 
+  let finalPrice = 0;
+
+  // PREMIUM / CUSTOM PRICE
+  if (selected.value === "Premium") {
+
+    if (!customPriceInput || isNaN(customPriceInput)) {
+      alert("Please enter a valid premium price.");
+      return;
+    }
+
+    finalPrice = Number(customPriceInput);
+
+  } else {
+
+    finalPrice = prices[selected.value];
+
+  }
+
+  // RUSH ADDITION
+  if (rush) {
+    finalPrice += 75;
+  }
+
   const payload = {
     secret: SECRET_KEY,
     name: name,
     email: email,
     design: selected.value,
-    rush: rush,
+    price: finalPrice,
+    rush: rush ? "Yes" : "No",
     notes: notes
   };
 
@@ -159,12 +198,15 @@ document.getElementById("sendBtn").addEventListener("click", function () {
     method: "POST",
     body: formData
   })
-    .then(res => res.text())
-    .then(msg => alert(msg))
-    .catch(err => {
-      console.error(err);
-      alert("Failed to send receipt");
-    });
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg);
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Failed to send receipt");
+  });
+
 });
 </script>
 
